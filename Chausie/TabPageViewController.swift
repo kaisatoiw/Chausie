@@ -26,7 +26,8 @@ open class TabPageViewController: UIViewController, PageViewControllerDelegate {
         composer: TabPageComposer<TabCell>,
         tabViewLayout: TabViewLayout,
         maxChildrenCount: Int = 1,
-        initialPageIndex: PageIndex = 0
+        initialPageIndex: PageIndex = 0,
+        isScrollEnabled: Bool
         ) {
 
         precondition(
@@ -48,7 +49,8 @@ open class TabPageViewController: UIViewController, PageViewControllerDelegate {
         self.pageViewController = PageViewController(
             viewControllers: composer.components.map { $0.child },
             maxChildrenCount: maxChildrenCount,
-            initialPageIndex: initialPageIndex
+            initialPageIndex: initialPageIndex,
+            isScrollEnabled: isScrollEnabled
         )
         self.tabView = composer.tabViewGenerator()
         self.tabViewLayout = tabViewLayout

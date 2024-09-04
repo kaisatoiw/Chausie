@@ -31,6 +31,9 @@ public final class PageViewController: UIViewController {
     /// The view controllers displayed by the page view controller.
     public let viewControllers: ContiguousArray<Child>
 
+    /// A Boolean value indicating whether horizontal scrolling is enabled for the page view controller.
+    public let isScrollEnabled: Bool
+
     /// A index set of child view controller added to the container.
     private struct ChildrenIndices {
         var forward: PageIndex
@@ -47,7 +50,7 @@ public final class PageViewController: UIViewController {
         }
     }
 
-    private let scrollView = PageScrollView()
+    private let scrollView: PageScrollView = PageScrollView()
 
     /// A minimum index of content.
     private let minPageIndex: PageIndex = 0
@@ -63,9 +66,6 @@ public final class PageViewController: UIViewController {
 
     /// A Boolean value indicating whether the size for the container’s view is changing.
     private var isTransitioning = false
-
-    /// A Boolean value indicating whether horizontal scrolling is enabled for the page view controller.
-    private var isScrollEnabled = true
 
     /// A maximum index of content.
     private var maxPageIndex: PageIndex {
@@ -88,11 +88,12 @@ public final class PageViewController: UIViewController {
     public required init<S: Sequence>(
         viewControllers: S,
         maxChildrenCount: Int = 1,
-        initialPageIndex: PageIndex = 0
+        initialPageIndex: PageIndex = 0,
+        isScrollEnabled: Bool
         ) where S.Element == Child {
         self.viewControllers = ContiguousArray(viewControllers)
         self.maxChildrenCount = min(maxChildrenCount, self.viewControllers.count)
-
+        self.isScrollEnabled = isScrollEnabled
         forwardDistance = Int(ceil(CGFloat(self.maxChildrenCount  / 2)))
         backwardDistance = self.maxChildrenCount.isEven
             ? Int(CGFloat(self.maxChildrenCount) / 2 - 1)
@@ -138,6 +139,7 @@ public final class PageViewController: UIViewController {
         view.addSubview(scrollView)
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.isScrollEnabled = isScrollEnabled
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1),
             view.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 1),
