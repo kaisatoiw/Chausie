@@ -64,6 +64,9 @@ public final class PageViewController: UIViewController {
     /// A Boolean value indicating whether the size for the container’s view is changing.
     private var isTransitioning = false
 
+    /// A Boolean value indicating whether horizontal scrolling is enabled for the page view controller.
+    private var isScrollEnabled = true
+
     /// A maximum index of content.
     private var maxPageIndex: PageIndex {
         return viewControllers.count - 1
